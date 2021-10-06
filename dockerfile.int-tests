@@ -1,0 +1,6 @@
+FROM node:12.13.0-alpine AS alpine
+
+WORKDIR /app
+
+COPY ./tests/int .
+RUN npm install

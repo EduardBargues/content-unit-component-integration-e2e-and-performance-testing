@@ -2,6 +2,8 @@ version: "3.4"
 
 networks:
   main:
+  qa:
+  client:
   # k6:
   # grafana:
 
@@ -15,6 +17,9 @@ services:
       - Logging:LogLevel:Default=Warning
     networks:
       - main
+      - qa
+      - client
+
   api-dependency:
     image: api-dependency:latest
     ports:
@@ -23,6 +28,8 @@ services:
       - Logging:LogLevel:Default=Warning
     networks:
       - main
+      - qa
+
   api-service-discovery:
     image: api-service-discovery:latest
     ports:
@@ -32,6 +39,17 @@ services:
       - Logging:LogLevel:Default=Warning
     networks:
       - main
+
+  int-tests:
+    image: int-tests:latest
+    networks:
+      - qa
+
+  e2e-tests:
+    image: e2e-tests:latest
+    networks:
+      - client
+
   # influxdb:
   #   image: influxdb:1.8
   #   networks:

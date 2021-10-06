@@ -4,7 +4,7 @@ const responseIsOk = (response) => {
   expect(response.status).toBe(HTTP_STATUS_CODE_OK);
 };
 const responseContains1Call = (response) => {
-  expect(response.data.numberOfCalls).toBe(1);
+  expect(response.data.length).toBe(1);
 };
 
 module.exports = {

@@ -21,17 +21,27 @@ namespace WebApi.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        [HttpGet("api")]
-        public async Task<IActionResult> Get()
+        [HttpPost("api")]
+        public async Task<IActionResult> Post()
         {
             _logger.LogWarning($"obtaining {Service.Constants.SERVICE_NAME} url from service-discovery ...");
             var url = await _serviceDiscovery.GetUrlAsync(Service.Constants.SERVICE_NAME);
             _logger.LogWarning($"{Service.Constants.SERVICE_NAME} url is {url}");
+
             _logger.LogWarning($"calling {Service.Constants.SERVICE_NAME} ...");
             var dependencyResponse = await _service.DoAsync(url);
             _logger.LogWarning($"{Service.Constants.SERVICE_NAME} responded with {dependencyResponse}");
 
-            return Ok($"api + {dependencyResponse}");
+            return Ok();
+        }
+
+        [HttpGet("api")]
+        public async Task<IActionResult> Get()
+        {
+            var url = await _serviceDiscovery.GetUrlAsync(Service.Constants.SERVICE_NAME);
+            var numberOfCalls = await _service.GetNumberOfCallsAsync(url);
+
+            return Ok(new { numberOfCalls = numberOfCalls });
         }
     }
 }

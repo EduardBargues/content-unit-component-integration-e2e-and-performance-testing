@@ -6,5 +6,6 @@ namespace Service
     public interface IDependencyService
     {
         Task<HttpStatusCode> DoAsync(string url);
+        Task<int> GetNumberOfCallsAsync(string url);
     }
 }

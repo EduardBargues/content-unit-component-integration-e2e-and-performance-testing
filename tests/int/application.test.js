@@ -15,11 +15,11 @@ describe(`GIVEN application is up and running`, () => {
       then.responseIsOk(response);
     });
 
-    describe("WHEN calling get - /calls", () => {
-      it(`THEN should return 1 call`, async () => {
+    describe("WHEN calling api-dependency with get - /calls", () => {
+      it(`THEN api-dependency should have exactly 1 call stored`, async () => {
         const dependencyCallsResponse = await when.weInvokeEndpoint(
           "get",
-          app.api
+          app.calls
         );
         then.responseIsOk(dependencyCallsResponse);
         then.responseContains1Call(dependencyCallsResponse);
