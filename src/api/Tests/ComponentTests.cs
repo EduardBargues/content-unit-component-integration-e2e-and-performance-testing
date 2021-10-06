@@ -32,7 +32,7 @@ namespace Tests
                 .ReturnsAsync(dependencyResponse);
 
             // ACT
-            var response = await client.GetAsync("dotnet-webapi");
+            var response = await client.GetAsync("api");
 
             // ASSERT
             Assert.NotNull(response);

@@ -5,6 +5,7 @@ using System.Net;
 using Service;
 using ServiceDiscovery;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Tests
 {
@@ -26,8 +27,11 @@ namespace Tests
             mockDependency
                 .Setup(m => m.DoAsync(dependencyUrl))
                 .ReturnsAsync(dependencyResponse);
-
-            var controller = new WebApi.Controllers.Controller(mockDependency.Object, mockServiceDiscovery.Object);
+            var mockLogger = new Mock<ILogger<WebApi.Controllers.Controller>>();
+            mockDependency
+                .Setup(m => m.DoAsync(dependencyUrl))
+                .ReturnsAsync(dependencyResponse);
+            var controller = new WebApi.Controllers.Controller(mockDependency.Object, mockServiceDiscovery.Object, mockLogger.Object);
 
             // ACT
             var response = await controller.Get();
