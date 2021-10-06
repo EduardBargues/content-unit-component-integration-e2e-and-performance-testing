@@ -1,0 +1,4 @@
+{
+  "api": "http://host.docker.internal:5000/api",
+  "calls": "http://host.docker.internal:6000/calls"
+}

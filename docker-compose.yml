@@ -4,8 +4,6 @@ networks:
   main:
   qa:
   client:
-  # k6:
-  # grafana:
 
 services:
   api:
@@ -19,7 +17,6 @@ services:
       - main
       - qa
       - client
-
   api-dependency:
     image: api-dependency:latest
     ports:
@@ -29,7 +26,6 @@ services:
     networks:
       - main
       - qa
-
   api-service-discovery:
     image: api-service-discovery:latest
     ports:
@@ -40,47 +36,19 @@ services:
     networks:
       - main
 
-  int-tests:
-    image: int-tests:latest
+  tests-int:
+    image: tests-int:latest
     networks:
       - qa
-
-  e2e-tests:
-    image: e2e-tests:latest
+  tests-e2e:
+    image: tests-e2e:latest
     networks:
       - client
-
-  # influxdb:
-  #   image: influxdb:1.8
-  #   networks:
-  #     - k6
-  #     - grafana
-  #   ports:
-  #     - "8086:8086"
-  #   environment:
-  #     - INFLUXDB_DB=k6
-  #     - INFLUXDB_HTTP_MAX_BODY_SIZE=0
-  # grafana:
-  #   image: grafana/grafana:latest
-  #   networks:
-  #     - grafana
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-  #     - GF_AUTH_ANONYMOUS_ENABLED=true
-  #     - GF_AUTH_BASIC_ENABLED=false
-  #   volumes:
-  #     - ./dashboards:/var/lib/grafana/dashboards
-  #     - ./grafana-dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
-  #     - ./grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
-  # k6:
-  #   image: loadimpact/k6:latest
-  #   networks:
-  #     - k6
-  #   ports:
-  #     - "6565:6565"
-  #   environment:
-  #     - K6_OUT=influxdb=http://influxdb:8086/k6
-  #   volumes:
-  #     - ./scripts:/scripts
+  tests-perf:
+    image: loadimpact/k6:latest
+    networks:
+      - client
+    ports:
+      - "6565:6565"
+    volumes:
+      - ./tests/perf:/scripts
