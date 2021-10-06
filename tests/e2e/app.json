@@ -1,0 +1,7 @@
+{
+  "endpoints": {
+    "value": {
+      "_dotnet_webapi": "http://host.docker.internal:5000/dotnet-webapi"
+    }
+  }
+}
