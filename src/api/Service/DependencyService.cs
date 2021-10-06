@@ -18,7 +18,7 @@ namespace Service
             var fullUrl = $"{url}/dependency";
             _logger.LogWarning($"calling dependency on url {fullUrl} ...");
             using (HttpClient client = new HttpClient())
-            using (var response = await client.GetAsync(fullUrl))
+            using (var response = await client.PostAsync(fullUrl, null))
             {
                 _logger.LogWarning($"dependency responded with {response.StatusCode}");
                 return response.StatusCode;
