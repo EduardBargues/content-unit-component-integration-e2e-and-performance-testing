@@ -3,6 +3,7 @@ using Xunit;
 using System.Threading.Tasks;
 using System;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace Tests
 {
@@ -26,9 +27,9 @@ namespace Tests
             _factory.ServiceDiscovery
                 .Setup(m => m.GetUrlAsync(Service.Constants.SERVICE_NAME))
                 .ReturnsAsync(dependencyUrl);
-            var dependencyResponse = HttpStatusCode.OK;
+            var dependencyResponse = 1;
             _factory.DependencyService
-                .Setup(m => m.DoAsync(dependencyUrl))
+                .Setup(m => m.GetNumberOfCallsAsync(dependencyUrl))
                 .ReturnsAsync(dependencyResponse);
 
             // ACT
@@ -38,7 +39,13 @@ namespace Tests
             Assert.NotNull(response);
             Assert.Equal(expectedStatusCode, response.StatusCode);
             var body = await response.Content.ReadAsStringAsync();
-            Assert.Contains($"{dependencyResponse}", body);
+            var responseContent = JsonConvert.DeserializeObject<GetNumberOfCallsResponse>(body);
+            Assert.Equal(dependencyResponse, responseContent.NumberOfCalls);
+        }
+
+        public class GetNumberOfCallsResponse
+        {
+            public int NumberOfCalls { get; set; }
         }
     }
 }

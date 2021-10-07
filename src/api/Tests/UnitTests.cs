@@ -34,17 +34,12 @@ namespace Tests
             var controller = new WebApi.Controllers.Controller(mockDependency.Object, mockServiceDiscovery.Object, mockLogger.Object);
 
             // ACT
-            var response = await controller.Get();
+            var response = await controller.Post();
 
             // ASSERT
-            Assert.NotNull(response);
-            Assert.IsType<OkObjectResult>(response);
-            var okResult = (OkObjectResult)response;
+            Assert.IsType<OkResult>(response);
+            var okResult = (OkResult)response;
             Assert.Equal((int)expectedStatusCode, okResult.StatusCode);
-            var body = okResult.Value;
-            Assert.IsType<string>(body);
-            var message = (string)body;
-            Assert.Contains($"{dependencyResponse}", message);
         }
     }
 }
